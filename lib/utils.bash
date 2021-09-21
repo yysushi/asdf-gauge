@@ -2,7 +2,6 @@
 
 set -euo pipefail
 
-# TODO: Ensure this is the correct GitHub homepage where releases can be downloaded for gauge.
 GH_REPO="https://github.com/getgauge/gauge"
 TOOL_NAME="gauge"
 TOOL_TEST="gauge --help"
@@ -31,44 +30,43 @@ list_github_tags() {
 }
 
 list_all_versions() {
-  # TODO: Adapt this. By default we simply list the tag names from GitHub releases.
-  # Change this function if gauge has other means of determining installable versions.
   list_github_tags
 }
 
-download_release() {
-  local version filename url
-  version="$1"
-  filename="$2"
-
-  # TODO: Adapt the release URL convention for gauge
-  url="$GH_REPO/archive/v${version}.tar.gz"
-
-  echo "* Downloading $TOOL_NAME release $version..."
-  curl "${curl_opts[@]}" -o "$filename" -C - "$url" || fail "Could not download $url"
+get_download_url() {
+  local version="$1"
+  echo "$GH_REPO/releases/download/v${version}/gauge-${version}-$(get_platform).$(get_arch).zip"
 }
 
 install_version() {
-  local install_type="$1"
-  local version="$2"
-  local install_path="$3"
-
-  if [ "$install_type" != "version" ]; then
-    fail "asdf-$TOOL_NAME supports release installs only"
-  fi
+  local version install_path bin_install_path download_url
+  version="$1"
+  install_path="$2"
+  bin_install_path="$install_path/bin"
+  download_url="$(get_download_url "$version")"
 
   (
-    mkdir -p "$install_path"
-    cp -r "$ASDF_DOWNLOAD_PATH"/* "$install_path"
-
-    # TODO: Asert gauge executable exists.
-    local tool_cmd
-    tool_cmd="$(echo "$TOOL_TEST" | cut -d' ' -f1)"
-    test -x "$install_path/bin/$tool_cmd" || fail "Expected $install_path/bin/$tool_cmd to be executable."
-
+    mkdir -p "$bin_install_path"
+    # download
+    echo "* Downloading $TOOL_NAME release $version..."
+    curl "${curl_opts[@]}" -o "$install_path/gauge.zip" -C - "$download_url" || fail "Could not download $download_url"
+    # extract
+    unzip "$install_path/gauge.zip" -d "$bin_install_path" || fail "Could not extract $install_path/gauge.zip"
+    chmod +x "$bin_install_path/gauge"
+    rm -rf "$install_path/gauge.zip"
+    # test
+    test -x "$bin_install_path/gauge" || fail "Expected $bin_install_path/gauge to be executable."
     echo "$TOOL_NAME $version installation was successful!"
   ) || (
     rm -rf "$install_path"
     fail "An error ocurred while installing $TOOL_NAME $version."
   )
+}
+
+get_arch() {
+  uname -m | tr '[:upper:]' '[:lower:]'
+}
+
+get_platform() {
+  uname | tr '[:upper:]' '[:lower:]'
 }
