@@ -1,6 +1,6 @@
 <div align="center">
 
-# asdf-gauge [![Build](https://github.com/hanaugai/asdf-gauge/actions/workflows/build.yml/badge.svg)](https://github.com/hanaugai/asdf-gauge/actions/workflows/build.yml) [![Lint](https://github.com/hanaugai/asdf-gauge/actions/workflows/lint.yml/badge.svg)](https://github.com/hanaugai/asdf-gauge/actions/workflows/lint.yml)
+# asdf-gauge [![Build](https://github.com/yysushi/asdf-gauge/actions/workflows/build.yml/badge.svg)](https://github.com/yysushi/asdf-gauge/actions/workflows/build.yml) [![Lint](https://github.com/yysushi/asdf-gauge/actions/workflows/lint.yml/badge.svg)](https://github.com/yysushi/asdf-gauge/actions/workflows/lint.yml)
 
 
 [gauge](https://docs.gauge.org/) plugin for the [asdf version manager](https://asdf-vm.com).
@@ -28,7 +28,7 @@ Plugin:
 ```shell
 asdf plugin add gauge
 # or
-asdf plugin add gauge https://github.com/hanaugai/asdf-gauge.git
+asdf plugin add gauge https://github.com/yysushi/asdf-gauge.git
 ```
 
 gauge:
@@ -54,8 +54,8 @@ install & manage versions.
 
 Contributions of any kind welcome! See the [contributing guide](contributing.md).
 
-[Thanks goes to these contributors](https://github.com/hanaugai/asdf-gauge/graphs/contributors)!
+[Thanks goes to these contributors](https://github.com/yysushi/asdf-gauge/graphs/contributors)!
 
 # License
 
-See [LICENSE](LICENSE) © [hanaugai](https://github.com/hanaugai/)
+See [LICENSE](LICENSE) © [yysushi](https://github.com/yysushi/)
